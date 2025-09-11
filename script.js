@@ -7,7 +7,7 @@ let collectedScores = dataPropmt("Enter New Daily Collcted Scores");
 const rawMainScores = `
     ${pervScores}
 `;
-const rawNewScores = `  
+const rawNewScores = `
     ${collectedScores}
 `;
 const parseScores = raw => {
@@ -22,15 +22,23 @@ const parseScores = raw => {
 };
 const mainScores = parseScores(rawMainScores);
 const newScores = parseScores(rawNewScores);
+let summaryList = [];
 for (const key in newScores) {
   if (mainScores.hasOwnProperty(key)) {
-    console.log(`Code: ${key}, Pervious Point: ${mainScores[key]}, Collected points: ${ newScores[key]}, New Point: ${ (mainScores[key] + newScores[key])}`);
-    mainScores[key] += newScores[key];
-  }
+      summaryList.push({key, pervPoint: mainScores[key], collectedPoints: newScores[key], newPoint: (mainScores[key] + newScores[key])});
+      mainScores[key] += newScores[key];
+    }
 }
 const updatedList = Object.entries(mainScores)
-  .map(([k, v]) => `${k}: ${v}`)
-  .join("\n");
+.map(([k, v]) => `${k}: ${v}`)
+.join("\n");
 const scoreElement = document.getElementById("score");
 scoreElement.textContent = updatedList;
 Prism.highlightElement(scoreElement);
+const summaryElement = document.getElementById("summary");
+
+summaryList.forEach(item => {
+    const p = document.createElement("p");
+    p.textContent = `Code: ${item.key}, Pervious Point: ${item.pervPoint}, Collected points: ${item.collectedPoints}, New Point: ${item.newPoint}`;
+    summaryElement.appendChild(p);
+});
