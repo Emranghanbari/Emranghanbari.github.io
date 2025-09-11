@@ -4,10 +4,3 @@
 }
 body { background:#1e1e1e; color:#fff; padding:1rem; }
 code { font-family: 'Fira Code', monospace; font-size: 14px; }
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-}
