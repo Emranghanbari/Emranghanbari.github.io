@@ -1,44 +1,78 @@
-const dataPropmt = (text) => {
-    let data = window.prompt(text);
-    return data;
-}
-let pervScores = dataPropmt("Enter Your Scores From Score Vault");
-let collectedScores = dataPropmt("Enter New Daily Collcted Scores");
-const rawMainScores = `
-    ${pervScores}
-`;
-const rawNewScores = `
-    ${collectedScores}
-`;
-const parseScores = raw => {
-  const obj = {};
-  raw.trim().split("\n").forEach(line => {
-    if (line.includes(":")) {
-      const [key, value] = line.split(":").map(x => x.trim());
-      obj[key] = parseFloat(value);
-    }
-  });
-  return obj;
-};
-const mainScores = parseScores(rawMainScores);
-const newScores = parseScores(rawNewScores);
-let summaryList = [];
-for (const key in newScores) {
-  if (mainScores.hasOwnProperty(key)) {
-      summaryList.push({key, pervPoint: mainScores[key], collectedPoints: newScores[key], newPoint: (mainScores[key] + newScores[key])});
-      mainScores[key] += newScores[key];
-    }
-}
-const updatedList = Object.entries(mainScores)
-.map(([k, v]) => `${k}: ${v}`)
-.join("\n");
-const scoreElement = document.getElementById("score");
-scoreElement.textContent = updatedList;
-Prism.highlightElement(scoreElement);
-const summaryElement = document.getElementById("summary");
+document.getElementById('processBtn').addEventListener('click', () => {
+  const rawMainScores = document.getElementById('prevScores');
+  const rawNewScores = document.getElementById('collctedScores');
 
-summaryList.forEach(item => {
-    const p = document.createElement("p");
-    p.textContent = `Code: ${item.key}, Pervious Point: ${item.pervPoint}, Collected points: ${item.collectedPoints}, New Point: ${item.newPoint}`;
-    summaryElement.appendChild(p);
+  if (!rawMainScores.value.trim() || !rawNewScores.value.trim()) {
+    alert('Both fields are required!');
+    return;
+  }
+
+  const parseScores = (raw) => {
+    const obj = {};
+    raw
+      .trim()
+      .split('\n')
+      .forEach((line, idx) => {
+        if (line.includes(':')) {
+          const [key, value] = line.split(':').map((x) => x.trim());
+
+          // validate key
+          if (!/^[a-zA-Z0-9_-]+$/.test(key)) {
+            throw new Error(`Invalid key format at line ${idx + 1}: "${key}"`);
+          }
+
+          // validate value
+          const num = Number(value);
+          if (isNaN(num)) {
+            throw new Error(`Invalid number for key "${key}"`);
+          }
+
+          obj[key] = num;
+        }
+      });
+    return obj;
+  };
+
+  try {
+    const mainScores = parseScores(rawMainScores.value);
+    const newScores = parseScores(rawNewScores.value);
+
+    rawMainScores.value = '';
+    rawNewScores.value = '';
+
+    let summaryList = [];
+    for (const key in newScores) {
+      if (mainScores.hasOwnProperty(key)) {
+        summaryList.push({
+          key,
+          pervPoint: mainScores[key],
+          collectedPoints: newScores[key],
+          newPoint: mainScores[key] + newScores[key],
+        });
+        mainScores[key] += newScores[key];
+      }
+    }
+
+    const updatedList = Object.entries(mainScores)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join('\n');
+
+    const scoreElement = document.getElementById('score');
+    scoreElement.textContent = updatedList;
+    Prism.highlightElement(scoreElement);
+
+    const summaryElement = document.getElementById('summary');
+    summaryElement.innerHTML = ''; // پاکسازی قبل از رندر
+
+    const resultBox = document.getElementById('result');
+    resultBox.classList.remove('hidden');
+
+    summaryList.forEach((item) => {
+      const p = document.createElement('p');
+      p.textContent = `Code: ${item.key}, Previous: ${item.pervPoint}, Collected: ${item.collectedPoints}, New: ${item.newPoint}`;
+      summaryElement.appendChild(p);
+    });
+  } catch (err) {
+    alert(err.message);
+  }
 });

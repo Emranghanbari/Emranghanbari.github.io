@@ -1,32 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scores</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
-  <!-- Prism theme & toolbar -->
-  <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h2>Updated Scores</h2>
-  <pre><code id="score" class="language-javascript"></code></pre>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scores</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Prism theme & toolbar -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-primary">
+    <div class="font-[Vazirmatn] w-full text-white p-2">
+      <div class="flex flex-col justify-center items-center">
+        <div class="flex flex-col justify-around">
+          <div>
+            <h3>Enter Your Scores From Score Vault</h3>
+            <textarea
+              class="bg-secondary rounded"
+              id="prevScores"
+              rows="2"
+              cols="40"
+            ></textarea>
+          </div>
+          <div>
+            <h3>Enter New Daily Collected Scores</h3>
+            <textarea
+              class="bg-secondary rounded"
+              id="collctedScores"
+              rows="2"
+              cols="40"
+            ></textarea>
+          </div>
+        </div>
+        <button class="bg-secondary p-4 rounded" id="processBtn">
+          Process Scores
+        </button>
+      </div>
+    </div>
+    <div class="hidden h-screen" id="result">
+      <pre><code id="score" class="language-js text-sm"></code></pre>
+      <div class="bg-secondary text-white">
+        <h2>Summary</h2>
+        <div id="summary"></div>
+      </div>
+    </div>
+    <!-- Prism core & plugins -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
 
-  <div class="summary-box">
-    <h2>Summary</h2>
-    <div id="summary"></div>
-  </div>
-  <!-- Prism core & plugins -->
-  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
-
-  <!-- اسکریپت اصلی -->
-  <script src="./script.js"></script>
-</body>
+    <!-- اسکریپت اصلی -->
+    <script src="./script.js"></script>
+  </body>
 </html>
