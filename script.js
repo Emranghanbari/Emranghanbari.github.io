@@ -53,9 +53,11 @@ document.getElementById('processBtn').addEventListener('click', () => {
       }
     }
 
-    const updatedList = Object.entries(mainScores)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join('\n');
+    const updatedList = `💫موجودی امتیاز 
+${Object.entries(mainScores)
+  .map(([k, v]) => `${k}: ${v}`)
+  .join('\n')}
+    `;
 
     const scoreElement = document.getElementById('score');
     scoreElement.textContent = updatedList;
